@@ -1,0 +1,135 @@
+steps:
+  # Build ML service
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build-ml'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/ml:$COMMIT_SHA'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/ml:latest'
+      - './ml'
+
+  # Build YouTube backend service
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build-yt-backend'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/yt-backend:$COMMIT_SHA'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/yt-backend:latest'
+      - './yt-backend'
+
+  # Build Reddit backend service
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build-reddit-backend'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/reddit-backend:$COMMIT_SHA'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/reddit-backend:latest'
+      - './reddit-backend'
+
+  # Build Frontend service
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build-frontend'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/frontend:$COMMIT_SHA'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/frontend:latest'
+      - './frontend'
+
+  # Push ML service image
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push-ml'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/ml:$COMMIT_SHA'
+    waitFor:
+      - 'build-ml'
+
+  # Push ML service latest tag
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push-ml-latest'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/ml:latest'
+    waitFor:
+      - 'build-ml'
+
+  # Push YouTube backend image
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push-yt-backend'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/yt-backend:$COMMIT_SHA'
+    waitFor:
+      - 'build-yt-backend'
+
+  # Push YouTube backend latest tag
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push-yt-backend-latest'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/yt-backend:latest'
+    waitFor:
+      - 'build-yt-backend'
+
+  # Push Reddit backend image
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push-reddit-backend'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/reddit-backend:$COMMIT_SHA'
+    waitFor:
+      - 'build-reddit-backend'
+
+  # Push Reddit backend latest tag
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push-reddit-backend-latest'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/reddit-backend:latest'
+    waitFor:
+      - 'build-reddit-backend'
+
+  # Push Frontend image
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push-frontend'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/frontend:$COMMIT_SHA'
+    waitFor:
+      - 'build-frontend'
+
+  # Push Frontend latest tag
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push-frontend-latest'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/frontend:latest'
+    waitFor:
+      - 'build-frontend'
+
+# Images to be pushed to Container Registry
+images:
+  - 'gcr.io/$PROJECT_ID/ml:$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/ml:latest'
+  - 'gcr.io/$PROJECT_ID/yt-backend:$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/yt-backend:latest'
+  - 'gcr.io/$PROJECT_ID/reddit-backend:$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/reddit-backend:latest'
+  - 'gcr.io/$PROJECT_ID/frontend:$COMMIT_SHA'
+  - 'gcr.io/$PROJECT_ID/frontend:latest'
+
+# Build options
+options:
+  machineType: 'N1_HIGHCPU_8'
+  logging: CLOUD_LOGGING_ONLY
+  
+# Timeout for the entire build (default is 10 minutes)
+timeout: '1800s'
