@@ -19,25 +19,18 @@ git clone https://version.aalto.fi/gitlab/parniud1/data-science-project-2025-gro
 You will also need to create .env files in the reddit-backend and yt-backend folder with the following structure: 
 In the reddit-backend folder:
 ```
-REDDIT_APP_SECRET="fI8OFPNuG336lzBOH5_ZnMne2baifA"
-REDDIT_APP_NAME="ds-proj"
-REDDIT_APP_ID="sFoMD1k36r1I3XrTroP2vw"
+REDDIT_APP_SECRET=your_reddit_app_secret
+REDDIT_APP_NAME=your_reddit_app_name
+REDDIT_APP_ID=your_reddit_app_id
 
 ML_URL = http://ml:8080/get_sentiment
 
 ```
 In the yt-backend folder:
 ```
-YOUTUBE_KEY =  AIzaSyDUFrGQZNfkr_xsE6YPLV-ePBLoU_Tx4ug
+YOUTUBE_KEY=your_youtube_api_key 
 
 ML_URL = http://ml:8080/get_sentiment
-
-DB_HOST=db
-DB_NAME=data
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=postgres
-
 ```
 
 ## Running
